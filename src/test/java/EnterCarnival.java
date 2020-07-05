@@ -1,4 +1,5 @@
 import facaltyOps.Customer1;
+import facaltyOps.FacaltyOptions;
 import tickets.TicketOptions;
 
 import java.util.Scanner;
@@ -14,8 +15,7 @@ public class EnterCarnival {
         Scanner input = new Scanner(System.in);
         String action = "";
         System.out.println("Enter 'expo' to Explore Carnival: \n" +
-                "Enter 'cust' for Customer Details: \n" +
-                "Enter 'carn' for Carnival Details and option: \n" +
+                "Enter 'facalty' for Carnival Details and option: \n" +
                 "Enter 'quit' if you already have a ticket: \n");
 
         while (!action.equals("quit")){
@@ -25,11 +25,8 @@ public class EnterCarnival {
                     TicketOptions.runTicketOptions();
                     Explore.exploreC();
                     break;
-                case "cust":
-                    Customer1.runCustomer();
-                    break;
-                case "carn":
-
+                case "facalty":
+                    FacaltyOptions.runFacaltyOptions();
                     break;
                 case "quit":
                     System.out.println("Exitting the Carnival...");
