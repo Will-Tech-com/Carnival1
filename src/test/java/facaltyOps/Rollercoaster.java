@@ -72,8 +72,6 @@ public class Rollercoaster {
     public static void readInRideDetails(Scanner input) {
         Rides ride = new Rides();
 
-        System.out.print("Ride ID: ");
-        ride.setRide_id(input.nextInt());
         System.out.println("Ride Name: ");
         ride.setRide_name(input.next());
         System.out.println("Tokens Needed: ");
@@ -86,13 +84,22 @@ public class Rollercoaster {
 
     public static void rideUpdate(Rides ride) {
         try {
+            String sql = "select * from rides";
+
+                Statement stat = con.createStatement();
+                ResultSet rs = stat.executeQuery(sql);
+
+                int ride_id = 0;
+                while (rs.next()) {
+                    ride_id = rs.getInt("Ride_Id");
+                }
             String sqls = "INSERT INTO rides"
                     + "(Ride_Id, Ride_Name, Tokens_Needed, Height_Must_Be)"
                     + "VALUES (?, ?, ?, ?)";
 
             PreparedStatement state = con.prepareStatement(sqls);
 
-            state.setInt(1, ride.getRide_id());
+            state.setInt(1, ride_id -1);
             state.setString(2, ride.getRide_name());
             state.setInt(3, ride.getTokens_needed());
             state.setDouble(4, ride.getHeight());
@@ -110,17 +117,11 @@ public class Rollercoaster {
     }
 
     private static class Rides {
-        private int ride_id;
+
         private String ride_name;
         private int tokens_needed;
         private double height;
 
-        public int getRide_id() {
-            return ride_id;
-        }
-        public void setRide_id(int ride_id) {
-            this.ride_id = ride_id;
-        }
 
         public String getRide_name(){
             return ride_name;

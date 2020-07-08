@@ -71,8 +71,6 @@ public class InTheShop {
     public static void readInProductDetails(Scanner input) {
         Product product = new Product();
 
-        System.out.print("Product ID: ");
-        product.setProd_id(input.nextInt());
         System.out.println("Product Name: ");
         product.setProd_name(input.next());
         System.out.println("Tokens Needed: ");
@@ -83,13 +81,21 @@ public class InTheShop {
 
     public static void productUpdate(Product product) {
         try {
+            String sql = "select * from shop";
+
+                Statement stat = con.createStatement();
+                ResultSet rs = stat.executeQuery(sql);
+                int prod_id = 0;
+                while (rs.next()) {
+                    prod_id = rs.getInt("Product_Id");
+                }
             String sqls = "INSERT INTO shop"
                     + "(Product_Id, Product_Name, Tokens_Needed)"
                     + "VALUES (?, ?, ?)";
 
             PreparedStatement state = con.prepareStatement(sqls);
 
-            state.setInt(1, product.getProd_id());
+            state.setInt(1, prod_id - 1);
             state.setString(2, product.getProd_name());
             state.setInt(3, product.getTokens_needed());
 
@@ -106,16 +112,8 @@ public class InTheShop {
     }
 
     private static class Product {
-        private int prod_id;
         private String prod_name;
         private int tokens_needed;
-
-        public int getProd_id() {
-            return prod_id;
-        }
-        public void setProd_id(int prod_id) {
-            this.prod_id = prod_id;
-        }
 
         public String getProd_name(){
             return prod_name;

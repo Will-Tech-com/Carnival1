@@ -71,8 +71,6 @@ public class Customer1 {
     public static void readInCustomerDetails(Scanner input) {
         Customer customer = new Customer();
 
-        System.out.print("Customer ID: ");
-        customer.setCust_id(input.nextInt());
         System.out.println("Enter Customer Balance: ");
         customer.setCust_balance(input.nextDouble());
         System.out.println("Enter Customer Height: ");
@@ -83,13 +81,21 @@ public class Customer1 {
 
     public static void customerUpdate(Customer customer) {
         try {
+            String sql = "select * from customer";
+                Statement stat = con.createStatement();
+                ResultSet rs = stat.executeQuery(sql);
+
+                int cust_id = 0;
+                while (rs.next()) {
+                    cust_id = rs.getInt("Customer_ID");
+                }
             String sqls = "INSERT INTO customer"
                     + "(Customer_ID, Customer_Balance, Customer_Height)"
                     + "VALUES (?, ?, ?)";
 
             PreparedStatement state = con.prepareStatement(sqls);
 
-            state.setInt(1, customer.getCust_id());
+            state.setInt(1, cust_id + 1);
             state.setDouble(2,customer.getCust_balance());
             state.setDouble(3, customer.getCust_height());
 
@@ -106,16 +112,10 @@ public class Customer1 {
     }
 
     private static class Customer {
-        private int cust_id;
+
         private double cust_balance;
         private double cust_height;
 
-        public int getCust_id() {
-            return cust_id;
-        }
-        public void setCust_id(int cust_id) {
-            this.cust_id = cust_id;
-        }
 
         public double getCust_balance(){
             return cust_balance;
